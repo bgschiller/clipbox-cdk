@@ -106,16 +106,6 @@ We can't set a custom domain in Cloudfront without a SSL certificate for that do
       }
     );
 
-    if (hostedZone) {
-      new route53.ARecord(this, "SiteARecord", {
-        recordName: props.domainName,
-        target: route53.RecordTarget.fromAlias(
-          new targets.CloudFrontTarget(distribution)
-        ),
-        zone: hostedZone,
-      });
-    }
-
     const policy = new iam.Policy(this, "clipbox-writer-policy", {
       statements: [
         new iam.PolicyStatement({
@@ -138,6 +128,20 @@ We can't set a custom domain in Cloudfront without a SSL certificate for that do
       userName: clipboxWriter.userName,
     });
 
+    if (hostedZone) {
+      new route53.ARecord(this, "SiteARecord", {
+        recordName: props.domainName,
+        target: route53.RecordTarget.fromAlias(
+          new targets.CloudFrontTarget(distribution)
+        ),
+        zone: hostedZone,
+      });
+    } else if (props.domainName) {
+      new CfnOutput(this, "DNS instructions", {
+        value: `In your registrar's DNS settings, add a CNAME record pointing from ${props.domainName} to ${distribution.distributionDomainName}`,
+      });
+    }
+
     new CfnOutput(this, "accessKeyId", { value: accessKey.ref });
     new CfnOutput(this, "secretAccessKey", {
       value: accessKey.attrSecretAccessKey,
@@ -152,9 +156,11 @@ We can't set a custom domain in Cloudfront without a SSL certificate for that do
 
     new CfnOutput(
       this,
-      "set this value as CLIPBOX_URL_PREFIX in your shell startup script (~/.zshrc or ~/.bashrc)",
+      "add this line to your shell startup script (~/.zshrc or ~/.bashrc)",
       {
-        value: props.domainName || distribution.distributionDomainName,
+        value: `export CLIPBOX_URL_PREFIX=${
+          props.domainName || distribution.distributionDomainName
+        }`,
       }
     );
   }
