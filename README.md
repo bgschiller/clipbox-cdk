@@ -11,7 +11,7 @@ This repo will help you set up the infrastructure to use clipbox in your own AWS
 Update the values in bin/clipbox-cdk.ts, if you wish to change any of them. Don't worry about doing this right away though, you can always add them later and re-deploy.
 
 1. Set up your AWS account, if necessary. Get AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY credentials, and set up the aws-cli: `aws configure`
-1. `npx aws-cdk bootstrap`. This makes it possible to use cdk within this AWS account/region. It's not a problem to run it twice though.
+1. `npx aws-cdk bootstrap`. This makes it possible to use cdk within this AWS account/region.
 1. `npx aws-cdk deploy`. Create the infrastructure, or update it to account for the latest settings.
 
 The output from the deploy command will include
