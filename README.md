@@ -20,9 +20,19 @@ The output from the deploy command will include
 - A line `export CLIPBOX_URL_PREFIX=...` to add to your shell startup script
 - (possibly) a DNS record to add to your domain authority, to point your domain name to the cloudfront origin
 
-## Wiring
+## Usage
 
-Once you've deployed your stack, it's time to wire up the scripts to keybindings. You can do this however you like. I've used Alfred and Gnome keyboard setup, but most recently I'm using Raycast. It does everything I liked from Alfred, but it's also free.
+The scripts directory has the following entry points:
+
+- `clipbox-selection.sh`: Capture a selection of the screen and upload a png to S3. Put the public URL on your clipboard.
+- `clipbox-text-or-file.sh`: If the active window is Finder, upload the highlighted file. Otherwise, upload the contents of the clipboard as text.
+- `clipbox-annotate.sh`: Capture a selection of the screen and open it in Preview. When preview is quit, upload the (possibly annotated) screenshot to S3 and put the public URL on the clipboard.
+
+While you can run these directly, it's much more common to wire them up to a launcher like [Raycast](https://www.raycast.com/).
+
+### Wiring
+
+Once you've deployed your stack, it's time to wire up the scripts to keybindings. You can do this however you like. I've used Alfred and Gnome keyboard setup, but most recently I'm using [Raycast](https://www.raycast.com/). It does everything I liked from Alfred, but it's also free.
 
 Once you have it installed, [add the scripts directory from this repo to Raycast](https://github.com/raycast/script-commands#install-script-commands-from-this-repository). I recommend assigning keybindings to the commands. I use
 

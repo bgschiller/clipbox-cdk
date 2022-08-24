@@ -23,6 +23,6 @@ if [[ $FILENAME == ~/.clipbox/clip.txt ]]; then
 else
   UPLOAD_NAME=$(basename $FILENAME)
 fi
-echo -n "https://clip.brianschiller.com/$UPLOAD_NAME" | pbcopy
-aws --profile clipbox-writer s3 cp $FILENAME s3://brianschiller-clipbox/$UPLOAD_NAME --metadata-directive REPLACE --content-type $(file --mime-type --brief $FILENAME) --acl public-read
+echo -n "https://$CLIPBOX_URL_PREFIX/$UPLOAD_NAME" | pbcopy
+aws --profile clipbox-writer s3 cp $FILENAME s3://$CLIPBOX_URL_PREFIX/$UPLOAD_NAME --metadata-directive REPLACE --content-type $(file --mime-type --brief $FILENAME) --acl public-read
 echo "Copied URL to clipboard"
